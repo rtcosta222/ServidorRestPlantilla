@@ -24,7 +24,7 @@ public class Plantilla {
     
     public Plantilla(){}
     
-    //El "name" debe de coincidor con el valor de la etiquete en el xml.
+    //El "name" debe de coincidor con el valor de la etiqueta en el xml.
     @XmlElement(name = "idPlantilla")
     public int getIdPlantilla() {
         return idPlantilla;

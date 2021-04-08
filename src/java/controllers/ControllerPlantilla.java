@@ -7,8 +7,10 @@ package controllers;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.JAXBException;
+import models.Funciones;
 import models.ListaPlantilla;
 import models.Plantilla;
 import services.ServicePlantilla;
@@ -18,6 +20,7 @@ import services.ServicePlantilla;
  * @author lscar
  */
 public class ControllerPlantilla {
+   // Como si fuera un repositorio(service <-> repo).
     ServicePlantilla service;
     
     public ControllerPlantilla(){
@@ -65,6 +68,16 @@ public class ControllerPlantilla {
             html += "<td>" + p.getTurno() + "</td>";
             html += "<td>" + p.getSalario() + "</td>";
             html += "</tr>";
+        }
+        return html;
+    }
+    
+    public String getPlantillaFunciones(){
+        Funciones funciones = this.service.getPlantillaFunciones();
+        ArrayList<String> funcs = funciones.getFuncion();
+        String html = "";
+        for(String s: funcs){
+            html += "<option value='" + s + "'>" + s + "</option>";
         }
         return html;
     }

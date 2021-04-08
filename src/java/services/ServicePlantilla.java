@@ -16,6 +16,7 @@ import java.net.URL;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import models.Funciones;
 import models.ListaPlantilla;
 
 /**
@@ -37,42 +38,62 @@ public class ServicePlantilla {
         String separator = "";
         
         //Leemos las líneas del xml e introducimos '\n' para separarlas. El resultado final
-        //será una sola línea.
+        //será una sola línea:
+        //
+        // - "buffer" data format: <datos>\n
+        //                             <dato>\n
+        //                                <dat>01234</dat>\n
+        //                             </dato>\n
+        //                             <dato>\n
+        //                                <dat>56789</dat>\n
+        //                             </dato>\n
+        //                         </datos>\n
+        // - "linea" data format:  <datos>
+        //                             <dato>
+        //                                <dat>01234</dat>
+        //                             </dato>
+        //                             <dato>
+        //                                <dat>56789</dat>
+        //                             </dato>
+        //                         </datos>
+        
         while((linea = buffer.readLine()) != null){
             data.append(separator + linea);
             separator = "\n";
         }
+        
+        // - "data" data format:  
+        //      <datos>\n<dato>\n<dat>01234</dat>\n</dato>\n<dato>\n<dat>56789</dat>\n
+        //                             </dato>\n</datos>\n
+        
         String response = data.toString();
         return response;
     }
     
-    public ListaPlantilla getPlantillaSalario(int salario) throws MalformedURLException, IOException, JAXBException{
-        // Como con ajax: 
-        //  $.ajax({
-        //      url: url + request,
+    public ListaPlantilla getPlantillaSalario(int salario) 
+                            throws MalformedURLException, IOException, JAXBException{
+
         String request = "api/plantilla/salario/" + salario;
-        URL peticion = new URL(this.url + request);
-        
+        URL peticion = new URL(this.url + request);        
         HttpURLConnection conexion = (HttpURLConnection)peticion.openConnection();
-        //      type: "get",
         conexion.setRequestMethod("GET");
-        //      dataType: "xml",
         conexion.setRequestProperty("Accept", "application/xml");
-        //      success: function(data){...}});
+        
         if(conexion.getResponseCode() == 200){
             InputStream stream = conexion.getInputStream();
             String data = this.leerRespuestaApi(stream);
             JAXBContext context = JAXBContext.newInstance(ListaPlantilla.class);
             Unmarshaller serial = context.createUnmarshaller();
             StringReader reader = new StringReader(data);
-            ListaPlantilla plantilla = (ListaPlantilla)serial.unmarshal(reader);
+            ListaPlantilla plantilla = (ListaPlantilla) serial.unmarshal(reader);
             return plantilla;
         } else{
             return null;
         }
     }
 
-    public ListaPlantilla getPlantillaFuncion(String funcion) throws MalformedURLException, IOException, JAXBException{
+    public ListaPlantilla getPlantillaFuncion(String funcion) 
+                            throws MalformedURLException, IOException, JAXBException{
         // Como con ajax: 
         //  $.ajax({
         //      url: url + request,
@@ -84,21 +105,35 @@ public class ServicePlantilla {
         conexion.setRequestMethod("GET");
         //      dataType: "xml",
         conexion.setRequestProperty("Accept", "application/xml");
-        //      success: function(data){...}});
+        //      success: function(data){...}
+        //  });
         if(conexion.getResponseCode() == 200){
+
+            // Secuencia de objetos: 
+            //      conexion -> stream -> data -> (reader)serial <- context(ListaPlantilla)
+            //                                            ||
+            //                                            \/
+            //                                         plantilla
+
             InputStream stream = conexion.getInputStream();
             String data = this.leerRespuestaApi(stream);
             JAXBContext context = JAXBContext.newInstance(ListaPlantilla.class);
             Unmarshaller serial = context.createUnmarshaller();
             StringReader reader = new StringReader(data);
-            ListaPlantilla plantilla = (ListaPlantilla)serial.unmarshal(reader);
+            ListaPlantilla plantilla = (ListaPlantilla) serial.unmarshal(reader);
             return plantilla;
         } else{
             return null;
         }
     }
+    
+    public Funciones getPlantillaFunciones(){
         
-    public ListaPlantilla getPlantilla() throws MalformedURLException, IOException, JAXBException{
+        return null;
+    }
+        
+    public ListaPlantilla getPlantilla()
+                            throws MalformedURLException, IOException, JAXBException{
         // Como con ajax: 
         //  $.ajax({
         //      url: url + request,
