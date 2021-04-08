@@ -20,7 +20,6 @@
             <select name="selectedfuncion">
                 <%=controller.getPlantillaFunciones()%>
             </select>
-            <input type="text" name="cjfuncion"/>
             <button type="submit">Ver plantilla</button>
         </form>
         

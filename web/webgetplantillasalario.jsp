@@ -16,7 +16,7 @@
     <body>
         <h1>Consumo XML Java Api Plantilla/Salario</h1>
         <form method="post">
-            <label>Salario </label>
+            <label>Salario: </label>
             <input type="text" name="cjsalario"/>
             <button type="submit">Ver plantilla</button>
         </form>

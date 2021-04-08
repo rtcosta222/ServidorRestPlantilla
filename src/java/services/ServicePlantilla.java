@@ -70,10 +70,7 @@ public class ServicePlantilla {
         return response;
     }
     
-    public ListaPlantilla getPlantillaSalario(int salario) 
-                            throws MalformedURLException, IOException, JAXBException{
-
-        String request = "api/plantilla/salario/" + salario;
+    private ListaPlantilla getRequestPlantilla(String request) throws MalformedURLException, IOException, JAXBException{
         URL peticion = new URL(this.url + request);        
         HttpURLConnection conexion = (HttpURLConnection)peticion.openConnection();
         conexion.setRequestMethod("GET");
@@ -82,6 +79,7 @@ public class ServicePlantilla {
         if(conexion.getResponseCode() == 200){
             InputStream stream = conexion.getInputStream();
             String data = this.leerRespuestaApi(stream);
+            // XML ->java classes
             JAXBContext context = JAXBContext.newInstance(ListaPlantilla.class);
             Unmarshaller serial = context.createUnmarshaller();
             StringReader reader = new StringReader(data);
@@ -90,6 +88,12 @@ public class ServicePlantilla {
         } else{
             return null;
         }
+    }
+    
+    public ListaPlantilla getPlantillaSalario(int salario) 
+                            throws MalformedURLException, IOException, JAXBException{
+        String request = "api/plantilla/salario/" + salario;
+        return this.getRequestPlantilla(request);
     }
 
     public ListaPlantilla getPlantillaFuncion(String funcion) 
@@ -100,7 +104,7 @@ public class ServicePlantilla {
         String request = "api/plantilla/buscarfuncion/" + funcion;
         URL peticion = new URL(this.url + request);
         
-        HttpURLConnection conexion = (HttpURLConnection)peticion.openConnection();
+        HttpURLConnection conexion = (HttpURLConnection) peticion.openConnection();
         //      type: "get",
         conexion.setRequestMethod("GET");
         //      dataType: "xml",
@@ -126,36 +130,18 @@ public class ServicePlantilla {
             return null;
         }
     }
-    
-    public Funciones getPlantillaFunciones(){
-        
-        return null;
-    }
-        
+
     public ListaPlantilla getPlantilla()
                             throws MalformedURLException, IOException, JAXBException{
         // Como con ajax: 
         //  $.ajax({
         //      url: url + request,
         String request = "api/plantilla";
-        URL peticion = new URL(this.url + request);
-        
-        HttpURLConnection conexion = (HttpURLConnection)peticion.openConnection();
-        //      type: "get",
-        conexion.setRequestMethod("GET");
-        //      dataType: "xml",
-        conexion.setRequestProperty("Accept", "application/xml");
-        //      success: function(data){...}});
-        if(conexion.getResponseCode() == 200){
-            InputStream stream = conexion.getInputStream();
-            String data = this.leerRespuestaApi(stream);
-            JAXBContext context = JAXBContext.newInstance(ListaPlantilla.class);
-            Unmarshaller serial = context.createUnmarshaller();
-            StringReader reader = new StringReader(data);
-            ListaPlantilla plantilla = (ListaPlantilla)serial.unmarshal(reader);
-            return plantilla;
-        } else{
-            return null;
-        }
+        return this.getRequestPlantilla(request);
+    }
+     
+    public Funciones getPlantillaFunciones(){
+        //...
+        return null;
     }
 }
