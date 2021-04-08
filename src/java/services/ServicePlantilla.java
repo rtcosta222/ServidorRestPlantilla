@@ -140,8 +140,26 @@ public class ServicePlantilla {
         return this.getRequestPlantilla(request);
     }
      
-    public Funciones getPlantillaFunciones(){
-        //...
-        return null;
+    public Funciones getPlantillaFunciones() 
+                        throws MalformedURLException, IOException, JAXBException{
+
+        String request = "api/plantilla/buscarfunciones";
+        URL peticion = new URL(this.url + request);        
+        HttpURLConnection conexion = (HttpURLConnection)peticion.openConnection();
+        conexion.setRequestMethod("GET");
+        conexion.setRequestProperty("Accept", "application/xml");
+        
+        if(conexion.getResponseCode() == 200){
+            InputStream stream = conexion.getInputStream();
+            String data = this.leerRespuestaApi(stream);
+            // XML ->java classes
+            JAXBContext context = JAXBContext.newInstance(Funciones.class);
+            Unmarshaller serial = context.createUnmarshaller();
+            StringReader reader = new StringReader(data);
+            Funciones funciones = (Funciones) serial.unmarshal(reader);
+            return funciones;
+        } else{
+            return null;
+        }
     }
 }

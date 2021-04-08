@@ -27,7 +27,8 @@ public class ControllerPlantilla {
         this.service = new ServicePlantilla();
     }
     
-    public String getTablaPlantilla() throws IOException, MalformedURLException, JAXBException{
+    public String getTablaPlantilla() 
+                    throws IOException, MalformedURLException, JAXBException{
         ListaPlantilla lista = this.service.getPlantilla();
         List<Plantilla> plantillas = lista.getPlantillas();
         String html = "";
@@ -42,7 +43,8 @@ public class ControllerPlantilla {
         return html;
     }
 
-    public String getPlantillaFuncion(String funcion) throws IOException, MalformedURLException, JAXBException{
+    public String getPlantillaFuncion(String funcion) 
+                    throws IOException, MalformedURLException, JAXBException{
         ListaPlantilla lista = this.service.getPlantillaFuncion(funcion);
         List<Plantilla> plantillas = lista.getPlantillas();
         String html = "";
@@ -57,7 +59,8 @@ public class ControllerPlantilla {
         return html;
     }
 
-    public String getPlantillaSalario(int salario) throws IOException, MalformedURLException, JAXBException{
+    public String getPlantillaSalario(int salario) 
+                    throws IOException, MalformedURLException, JAXBException{
         ListaPlantilla lista = this.service.getPlantillaSalario(salario);
         List<Plantilla> plantillas = lista.getPlantillas();
         String html = "";
@@ -72,7 +75,8 @@ public class ControllerPlantilla {
         return html;
     }
     
-    public String getPlantillaFunciones(){
+    public String getPlantillaFunciones() 
+                    throws IOException, MalformedURLException, JAXBException{
         Funciones funciones = this.service.getPlantillaFunciones();
         ArrayList<String> funcs = funciones.getFuncion();
         String html = "";
