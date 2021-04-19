@@ -66,8 +66,7 @@ public class ServicePlantilla {
         //      <datos>\n<dato>\n<dat>01234</dat>\n</dato>\n<dato>\n<dat>56789</dat>\n
         //                             </dato>\n</datos>\n
         
-        String response = data.toString();
-        return response;
+        return data.toString();
     }
     
     private ListaPlantilla getRequestPlantilla(String request) throws MalformedURLException, IOException, JAXBException{
